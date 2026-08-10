@@ -40,21 +40,21 @@
 //   };
 
 //   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-//       <div className="bg-white rounded-xl shadow-md p-8 w-full max-w-md">
-//         <h1 className="text-2xl font-bold text-center text-orange-600 mb-6">
+//     <div className="flex items-center justify-center min-h-screen px-4 bg-gray-100">
+//       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-xl">
+//         <h1 className="mb-6 text-2xl font-bold text-center text-orange-600">
 //           Create Account
 //         </h1>
 
 //         {error && (
-//           <div className="bg-red-100 text-red-700 text-sm p-3 rounded-md mb-4">
+//           <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-md">
 //             {error}
 //           </div>
 //         )}
 
 //         <form onSubmit={handleSubmit} className="space-y-4">
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//             <label className="block mb-1 text-sm font-medium text-gray-700">
 //               Name
 //             </label>
 //             <input
@@ -63,12 +63,12 @@
 //               value={formData.name}
 //               onChange={handleChange}
 //               required
-//               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
 //             />
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//             <label className="block mb-1 text-sm font-medium text-gray-700">
 //               Email
 //             </label>
 //             <input
@@ -77,12 +77,12 @@
 //               value={formData.email}
 //               onChange={handleChange}
 //               required
-//               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
 //             />
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//             <label className="block mb-1 text-sm font-medium text-gray-700">
 //               Password
 //             </label>
 //             <input
@@ -92,12 +92,12 @@
 //               onChange={handleChange}
 //               required
 //               minLength={6}
-//               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
 //             />
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//             <label className="block mb-1 text-sm font-medium text-gray-700">
 //               Phone
 //             </label>
 //             <input
@@ -105,19 +105,19 @@
 //               name="phone"
 //               value={formData.phone}
 //               onChange={handleChange}
-//               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
 //             />
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//             <label className="block mb-1 text-sm font-medium text-gray-700">
 //               Sign up as
 //             </label>
 //             <select
 //               name="role"
 //               value={formData.role}
 //               onChange={handleChange}
-//               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
 //             >
 //               <option value="customer">Customer</option>
 //               <option value="vendor">Restaurant Owner</option>
@@ -128,15 +128,15 @@
 //           <button
 //             type="submit"
 //             disabled={loading}
-//             className="w-full bg-orange-600 text-white py-2 rounded-md font-medium hover:bg-orange-700 transition disabled:opacity-50"
+//             className="w-full py-2 font-medium text-white transition bg-orange-600 rounded-md hover:bg-orange-700 disabled:opacity-50"
 //           >
 //             {loading ? "Creating account..." : "Sign Up"}
 //           </button>
 //         </form>
 
-//         <p className="text-center text-sm text-gray-600 mt-4">
+//         <p className="mt-4 text-sm text-center text-gray-600">
 //           Already have an account?{" "}
-//           <Link to="/login" className="text-orange-600 font-medium">
+//           <Link to="/login" className="font-medium text-orange-600">
 //             Log in
 //           </Link>
 //         </p>
@@ -282,13 +282,13 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div className="relative flex h-screen items-center justify-center overflow-hidden bg-white px-4 py-4">
+    <div className="relative flex items-center justify-center h-screen px-4 py-4 overflow-hidden bg-white">
       <AnimStyles />
 
       <div className="su-card-in relative w-full max-w-[420px] overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_48px_-24px_rgba(28,20,12,0.12)]">
         <div className="h-1.5 w-full bg-[#EA580C]" />
         <div className="p-6 sm:p-7">
-        <div className="su-fade-up mb-5 text-center" style={{ animationDelay: "40ms" }}>
+        <div className="mb-5 text-center su-fade-up" style={{ animationDelay: "40ms" }}>
           <h1 className="font-serif text-[23px] font-semibold tracking-tight text-stone-900">
             Create your account
           </h1>
@@ -410,7 +410,7 @@ const handleSubmit = async (e) => {
                   onClick={() => setShowPassword((v) => !v)}
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-stone-50 hover:text-stone-600"
+                  className="absolute flex items-center justify-center w-8 h-8 transition-colors -translate-y-1/2 rounded-lg right-1 top-1/2 text-stone-400 hover:bg-stone-50 hover:text-stone-600"
                 >
                   {showPassword ? <FiEyeOff className="h-[18px] w-[18px]" /> : <FiEye className="h-[18px] w-[18px]" />}
                 </button>
@@ -440,7 +440,7 @@ const handleSubmit = async (e) => {
                           : "border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-stone-50",
                       ].join(" ")}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="w-4 h-4" />
                       <span className="text-center text-[10.5px] font-semibold leading-tight">
                         {r.label}
                       </span>
@@ -457,14 +457,14 @@ const handleSubmit = async (e) => {
 >
   {lockedOut ? "Try again later" : loading ? "Creating account..." : "Sign up"}
 </button>
-          </form>
-          <div className="mt-4 flex items-center gap-3">
-  <div className="h-px flex-1 bg-stone-200" />
+          </form> Times camp le ft me to update le arnch update , times player to appear share storn to rack do ing up time stamp up in the intabase, directly, to field channel s to no brought law machine multiple task website it will a knowledgeable person who is fruit
+          <div className="flex items-center gap-3 mt-4">
+  <div className="flex-1 h-px bg-stone-200" />
   <span className="text-[12px] text-stone-400">or</span>
-  <div className="h-px flex-1 bg-stone-200" />
+  <div className="flex-1 h-px bg-stone-200" />
 </div>
 
-<div className="mt-4 flex justify-center">
+<div className="flex justify-center mt-4">
   <GoogleLogin
     onSuccess={handleGoogleSuccess}
     onError={() => setError("Google login failed")}
