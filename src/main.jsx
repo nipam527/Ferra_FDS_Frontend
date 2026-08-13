@@ -13,7 +13,10 @@ import { FavoritesProvider } from './context/FavoritesContext.jsx'
 import { NotificationProvider } from './context/NotificationContext.jsx'
 import {LocationProvider} from './context/LocationContext.jsx'
 import { useLocation as useRouterLocation } from "react-router-dom";
-
+console.log(
+  "Google Client ID:",
+  import.meta.env.VITE_GOOGLE_CLIENT_ID
+);
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

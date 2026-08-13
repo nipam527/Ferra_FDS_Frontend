@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import axiosInstance from "../api/axiosInstance";
 import { getImageUrl } from "../utils/getImageUrl";
 import FavoriteButton from "../components/FavoriteButton";
+import { isRestaurantOpenNow } from "../utils/isRestaurantOpen";
+
 
 function IconStar(props) {
   return (
@@ -122,6 +124,7 @@ const cardVariants = {
 
 function RestaurantCard({ r, index }) {
   const rating = r.rating?.avg;
+  const openNow = isRestaurantOpenNow(r); // compute it here
 
   return (
     <motion.div layout custom={index} variants={cardVariants} initial="hidden" animate="show" exit="exit">
@@ -155,7 +158,7 @@ function RestaurantCard({ r, index }) {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 via-black/10 to-transparent px-3 pb-2.5 pt-8">
             <span className="flex items-center gap-1.5 text-[11px] font-medium text-white">
               <span className={`h-1.5 w-1.5 rounded-full ${r.isOpen ? "bg-green-400" : "bg-stone-300"}`} />
-              {r.isOpen ? "Open now" : "Closed"}
+      {openNow ? "Open now" : "Closed"}
             </span>
             {rating ? (
               <span className="flex items-center gap-1 rounded-md bg-white/95 px-1.5 py-0.5 text-[11px] font-semibold text-stone-800">
@@ -237,7 +240,7 @@ function Restaurants() {
         cuisineStr.includes(q) ||
         r.address?.city?.toLowerCase().includes(q);
       const matchesCuisine = activeCuisine === "all" || (r.cuisineType || []).includes(activeCuisine);
-      const matchesOpen = !openOnly || r.isOpen;
+const matchesOpen = !openOnly || isRestaurantOpenNow(r);
       return matchesQuery && matchesCuisine && matchesOpen;
     });
 

@@ -457,8 +457,7 @@ const handleSubmit = async (e) => {
 >
   {lockedOut ? "Try again later" : loading ? "Creating account..." : "Sign up"}
 </button>
-          </form> Times camp le ft me to update le arnch update , times player to appear share storn to rack do ing up time stamp up in the intabase, directly, to field channel s to no brought law machine multiple task website it will a knowledgeable person who is fruit
-          <div className="flex items-center gap-3 mt-4">
+          </form> <div className="flex items-center gap-3 mt-4">
   <div className="flex-1 h-px bg-stone-200" />
   <span className="text-[12px] text-stone-400">or</span>
   <div className="flex-1 h-px bg-stone-200" />

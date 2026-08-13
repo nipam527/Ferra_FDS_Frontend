@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { getImageUrl } from "../utils/getImageUrl";
 import FavoriteButton from "../components/FavoriteButton";
+import { isRestaurantOpenNow } from "../utils/isRestaurantOpen";
 
 function IconStar(props) {
   return (
@@ -182,6 +183,8 @@ function RestaurantDetail() {
   }, {});
 
   const categories = useMemo(() => Object.keys(groupedMenu), [menuItems]);
+  const openNow = isRestaurantOpenNow(restaurant);
+
 
   useEffect(() => {
     if (categories.length && !activeCategory) setActiveCategory(categories[0]);
@@ -287,13 +290,11 @@ function RestaurantDetail() {
 
         <div className="absolute flex items-center gap-2 right-4 top-4 sm:right-6 sm:top-6">
           <FavoriteButton restaurantId={id} />
-          <span
-            className={`rounded-full px-3 py-1.5 text-[11.5px] font-medium backdrop-blur-sm ${
-              restaurant.isOpen ? "bg-green-500/90 text-white" : "bg-stone-500/90 text-white"
-            }`}
-          >
-            {restaurant.isOpen ? "Open now" : "Closed"}
-          </span>
+        <span className={`rounded-full px-3 py-1.5 text-[11.5px] font-medium backdrop-blur-sm ${
+  openNow ? "bg-green-500/90 text-white" : "bg-stone-500/90 text-white"
+}`}>
+  {openNow ? "Open now" : "Closed"}
+</span>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 rd-rise sm:px-6 sm:pb-8">
