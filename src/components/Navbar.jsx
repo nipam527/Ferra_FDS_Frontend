@@ -1,9 +1,22 @@
 // src/components/Navbar.jsx
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import NotificationBell from "./NotificationBell";
+
+/* ------------------------------------------------------------------------ */
+/*  Palette — matches Restaurants.jsx exactly. Pure white canvas,           */
+/*  near-black ink, one marigold accent, a quiet olive for secondary        */
+/*  states. No tinted backgrounds; separation via whitespace + hairlines.   */
+/*    ink        #1B1712      paper      #FFFFFF     line       #ECE7DD    */
+/*    marigold   #D98A2B      marigold-d #B96F1A      olive     #4B5D45    */
+/* ------------------------------------------------------------------------ */
+
+const EASE = [0.16, 1, 0.3, 1];
+
+/* ---------------------------------- Icons ---------------------------------- */
 
 function IconCart(props) {
   return (
@@ -77,18 +90,18 @@ function IconTag(props) {
 }
 
 // Custom mark: three fork tines resolving into a single "F" stem —
-// unique to this brand rather than a generic food glyph.
+// recolored to sit inside the warm-white / marigold system.
 function Logomark({ className }) {
   return (
     <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="40" height="40" rx="12" fill="#1C1917" />
+      <rect width="40" height="40" rx="12" fill="#1B1712" />
       <path
         d="M13 10v7.5c0 1.5 1 2.5 2.3 2.7V30a1.3 1.3 0 0 0 2.6 0v-9.8c1.3-.2 2.3-1.2 2.3-2.7V10a1 1 0 0 0-2 0v6a.8.8 0 0 1-1.6 0v-6a1 1 0 0 0-2 0v6a.8.8 0 0 1-1.6 0v-6a1 1 0 0 0-2 0Z"
-        fill="#FBBF24"
+        fill="#D98A2B"
       />
       <path
         d="M25.5 10c-2.2 0-4 2.3-4 5.4 0 2.2.9 4.1 2.3 4.9v9.4a1.3 1.3 0 0 0 2.6 0v-9.4c1.4-.8 2.3-2.7 2.3-4.9 0-3.1-1.8-5.4-4-5.4Z"
-        fill="#FBBF24"
+        fill="#D98A2B"
         opacity="0.55"
       />
     </svg>
@@ -97,16 +110,16 @@ function Logomark({ className }) {
 
 const navLinkClass = ({ isActive }) =>
   [
-    "relative py-1.5 text-[13.5px] font-medium tracking-wide transition-colors",
-    isActive ? "text-stone-900" : "text-stone-500 hover:text-stone-900",
-    "after:absolute after:left-0 after:-bottom-[3px] after:h-[2px] after:rounded-full after:bg-amber-600 after:transition-all after:duration-300 after:ease-out",
+    "relative py-1.5 text-[15px] font-medium tracking-wide transition-colors duration-200",
+    isActive ? "text-[#1B1712]" : "text-[#8A8072] hover:text-[#1B1712]",
+    "after:absolute after:left-0 after:-bottom-[3px] after:h-[2px] after:rounded-full after:bg-[#D98A2B] after:transition-all after:duration-300 after:ease-out",
     isActive ? "after:w-full" : "after:w-0 hover:after:w-full",
   ].join(" ");
 
 const mobileLinkClass = ({ isActive }) =>
   [
-    "flex items-center justify-between rounded-lg px-3 py-2.5 text-[14px] font-medium transition-colors",
-    isActive ? "bg-amber-50 text-amber-800" : "text-stone-700 hover:bg-stone-50",
+    "flex items-center justify-between rounded-xl px-3 py-2.5 text-[14px] font-medium transition-colors duration-200",
+    isActive ? "bg-[#D98A2B]/[0.08] text-[#B96F1A]" : "text-[#3A322A] hover:bg-[#F7F5EF]",
   ].join(" ");
 
 // role -> nav links, kept as data so both desktop and mobile render from one source
@@ -269,11 +282,11 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
           value={locationInput}
           onChange={(e) => setLocationInput(e.target.value)}
           placeholder="Enter delivery address"
-          className="rounded-lg border border-stone-200 px-3 py-2 text-[13px] outline-none focus:border-amber-500"
+          className="rounded-lg border border-[#ECE7DD] px-3 py-2 text-[13px] text-[#1B1712] outline-none transition-colors placeholder:text-[#A69C8C] focus:border-[#D98A2B]"
         />
         <button
           type="submit"
-          className="rounded-lg bg-stone-900 px-3 py-2 text-[13px] font-medium text-white hover:bg-stone-800"
+          className="rounded-lg bg-[#1B1712] px-3 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[#D98A2B]"
         >
           Save address
         </button>
@@ -282,7 +295,7 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
         type="button"
         onClick={handleUseCurrentLocation}
         disabled={locating}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-stone-200 px-3 py-2 text-[13px] font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#ECE7DD] px-3 py-2 text-[13px] font-medium text-[#6B6355] transition-colors hover:border-[#D98A2B]/40 hover:text-[#1B1712] disabled:opacity-50"
       >
         <IconLocateFixed className="w-3.5 h-3.5" />
         {locating ? "Locating…" : "Use current location"}
@@ -294,48 +307,57 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
   return (
     <nav
       className={[
-        "sticky top-0 z-40 border-b bg-white transition-shadow duration-300",
-        scrolled ? "border-stone-200 shadow-[0_1px_0_0_rgba(0,0,0,0.02),0_8px_24px_-16px_rgba(0,0,0,0.15)]" : "border-stone-100",
+        "sticky top-0 z-40 border-b bg-white/90 backdrop-blur-md transition-shadow duration-300",
+        scrolled ? "border-[#ECE7DD] shadow-[0_8px_24px_-16px_rgba(27,23,18,0.15)]" : "border-[#ECE7DD]",
       ].join(" ")}
     >
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3.5 sm:px-6">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group shrink-0">
-          <Logomark className="transition-transform duration-300 ease-out h-11 w-11 group-hover:-rotate-3" />
+          <Logomark className="w-10 h-10 transition-transform duration-300 ease-out group-hover:-rotate-3" />
           <span className="flex-col hidden leading-none sm:flex">
-            <span className="text-[21px] font-semibold tracking-tight text-stone-900">
-              Farro<span className="text-amber-600">.</span>
+            <span className="font-serif text-[20px] font-medium tracking-tight text-[#1B1712]">
+              Farro<span className="text-[#D98A2B]">.</span>
             </span>
-            <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-stone-400">
+            <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#A69C8C]">
               Delivered fresh
             </span>
           </span>
         </Link>
 
-        {/* Delivery location — real-world food-app pattern, sits right after the logo */}
+        {/* Delivery location */}
         <div className="relative hidden lg:block" ref={locationRef}>
           <button
             type="button"
             onClick={() => setLocationOpen((v) => !v)}
-            className="flex items-center gap-1.5 rounded-full py-1.5 pl-2 pr-3 text-[12.5px] font-medium text-stone-600 transition-colors hover:bg-stone-50 hover:text-stone-900"
+            className={`flex items-center gap-1.5 rounded-full border py-1.5 pl-2.5 pr-3 text-[12.5px] font-medium transition-colors duration-200 ${
+              locationOpen
+                ? "border-[#D98A2B] bg-[#D98A2B]/[0.07] text-[#B96F1A]"
+                : "border-[#ECE7DD] text-[#6B6355] hover:border-[#D98A2B]/40 hover:text-[#1B1712]"
+            }`}
           >
-            <IconMapPin className="w-4 h-4 text-amber-600 shrink-0" />
+            <IconMapPin className="w-4 h-4 text-[#D98A2B] shrink-0" />
             <span className="max-w-[140px] truncate">{deliveryLocation}</span>
             <IconChevron
-              className={`h-3 w-3 text-stone-400 transition-transform duration-200 ${
+              className={`h-3 w-3 text-[#A69C8C] transition-transform duration-200 ${
                 locationOpen ? "rotate-180" : ""
               }`}
             />
           </button>
 
-          <div
-            className={[
-              "absolute left-0 z-50 mt-2 w-72 origin-top-left overflow-hidden rounded-xl border border-stone-200 bg-white p-3 shadow-lg shadow-stone-900/[0.08] transition-all duration-150",
-              locationOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0",
-            ].join(" ")}
-          >
-            <LocationForm autoFocus={locationOpen} />
-          </div>
+          <AnimatePresence>
+            {locationOpen && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                transition={{ type: "spring", stiffness: 420, damping: 30 }}
+                className="absolute left-0 z-50 mt-2 w-72 origin-top-left overflow-hidden rounded-xl border border-[#ECE7DD] bg-white p-3 shadow-[0_20px_48px_-16px_rgba(27,23,18,0.2)]"
+              >
+                <LocationForm autoFocus={locationOpen} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Desktop nav */}
@@ -354,17 +376,17 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
         </div>
 
         {/* Right side */}
-        <div className="flex items-center ml-auto gap-2.5">
+        <div className="flex items-center gap-2 ml-auto">
           {user && <NotificationBell />}
           {user?.role === "customer" && (
             <Link
               to="/cart"
               aria-label="Cart"
-              className="relative flex items-center justify-center w-10 h-10 transition-colors rounded-full text-stone-600 hover:bg-stone-100 hover:text-stone-900"
+              className="relative flex items-center justify-center w-10 h-10 transition-colors rounded-full text-[#6B6355] hover:bg-[#F7F5EF] hover:text-[#1B1712]"
             >
               <IconCart className="w-5 h-5" />
               {itemCount > 0 && (
-                <span className="absolute top-1 right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-amber-600 px-[3px] text-[10px] font-semibold leading-none text-white">
+                <span className="absolute top-1 right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#D98A2B] px-[3px] text-[10px] font-semibold leading-none text-white">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
@@ -375,57 +397,68 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
             <div className="relative hidden md:block" ref={menuRef}>
               <button
                 onClick={() => setMenuOpen((v) => !v)}
-                className="flex items-center gap-2 rounded-full border border-stone-200 py-1 pl-1 pr-2.5 text-sm text-stone-700 transition-colors hover:border-stone-300 hover:bg-stone-50"
+                className="flex items-center gap-2 rounded-full border border-[#ECE7DD] py-1 pl-1 pr-2.5 text-sm text-[#3A322A] transition-colors duration-200 hover:border-[#D98A2B]/40 hover:bg-[#F7F5EF]"
               >
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-stone-800 to-stone-950 text-[11px] font-semibold text-white">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#1B1712] text-[11px] font-semibold text-white">
                   {initials}
                 </span>
                 <span className="max-w-[100px] truncate text-[13px] font-medium">
                   {user.name || user.email}
                 </span>
-                <IconChevron className={`h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${menuOpen ? "rotate-180" : ""}`} />
+                <IconChevron
+                  className={`h-3.5 w-3.5 text-[#A69C8C] transition-transform duration-200 ${
+                    menuOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
-              <div
-                className={[
-                  "absolute right-0 mt-2 w-52 origin-top-right overflow-hidden rounded-xl border border-stone-200 bg-white py-1.5 shadow-lg shadow-stone-900/[0.08] transition-all duration-150",
-                  menuOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0",
-                ].join(" ")}
-              >
-                <div className="px-3.5 py-2.5 border-b border-stone-100">
-                  <p className="truncate text-[13px] font-medium text-stone-900">{user.name || "Account"}</p>
-                  <p className="truncate text-[11.5px] text-stone-400">{user.email}</p>
-                </div>
-                {roleLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-3.5 py-2 text-[13px] text-stone-700 hover:bg-stone-50"
+              <AnimatePresence>
+                {menuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 30 }}
+                    className="absolute right-0 z-50 mt-2 w-52 origin-top-right overflow-hidden rounded-xl border border-[#ECE7DD] bg-white py-1.5 shadow-[0_20px_48px_-16px_rgba(27,23,18,0.2)]"
                   >
-                    {link.label}
-                  </Link>
-                ))}
-                <button
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-1.5 border-t border-stone-100 px-3.5 py-2 text-left text-[13px] text-red-600 hover:bg-red-50"
-                >
-                  <IconLogOut className="w-3.5 h-3.5" />
-                  Log out
-                </button>
-              </div>
+                    <div className="px-3.5 py-2.5 border-b border-[#ECE7DD]">
+                      <p className="truncate text-[13px] font-medium text-[#1B1712]">
+                        {user.name || "Account"}
+                      </p>
+                      <p className="truncate text-[11.5px] text-[#A69C8C]">{user.email}</p>
+                    </div>
+                    {roleLinks.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        onClick={() => setMenuOpen(false)}
+                        className="block px-3.5 py-2 text-[13px] text-[#3A322A] transition-colors hover:bg-[#F7F5EF]"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-1.5 border-t border-[#ECE7DD] px-3.5 py-2 text-left text-[13px] text-red-600 hover:bg-red-50"
+                    >
+                      <IconLogOut className="w-3.5 h-3.5" />
+                      Log out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ) : (
             <div className="items-center hidden gap-1 md:flex">
               <Link
                 to="/login"
-                className="px-3 py-1.5 text-[13.5px] font-medium text-stone-600 hover:text-stone-900"
+                className="px-3 py-1.5 text-[13.5px] font-medium text-[#6B6355] transition-colors hover:text-[#1B1712]"
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="rounded-full bg-stone-900 px-4 py-1.5 text-[13.5px] font-medium text-white shadow-sm transition-all hover:bg-stone-800 hover:shadow-md"
+                className="rounded-full bg-[#1B1712] px-4 py-1.5 text-[13.5px] font-medium text-white transition-colors duration-300 hover:bg-[#D98A2B]"
               >
                 Sign up
               </Link>
@@ -434,7 +467,7 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
 
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex items-center justify-center w-10 h-10 rounded-full text-stone-600 hover:bg-stone-100 md:hidden"
+            className="flex items-center justify-center w-10 h-10 transition-colors rounded-full text-[#6B6355] hover:bg-[#F7F5EF] md:hidden"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
@@ -446,35 +479,37 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
       {/* Mobile panel */}
       <div
         className={[
-          "grid overflow-hidden border-t border-stone-200 bg-white transition-[grid-template-rows] duration-300 ease-out md:hidden",
-          mobileOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr] border-t-0",
+          "grid overflow-hidden border-t bg-white transition-[grid-template-rows] duration-300 ease-out md:hidden",
+          mobileOpen ? "grid-rows-[1fr] border-[#ECE7DD]" : "grid-rows-[0fr] border-t-0",
         ].join(" ")}
       >
         <div className="min-h-0">
           {/* Account card */}
           {user && (
-            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100 bg-stone-50/60">
-              <span className="flex items-center justify-center w-10 h-10 text-sm font-semibold text-white rounded-full shrink-0 bg-gradient-to-br from-stone-800 to-stone-950">
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#ECE7DD] bg-[#F7F5EF]/60">
+              <span className="flex items-center justify-center w-10 h-10 text-sm font-semibold text-white rounded-full shrink-0 bg-[#1B1712]">
                 {initials}
               </span>
               <div className="min-w-0">
-                <p className="truncate text-[13.5px] font-medium text-stone-900">{user.name || "Account"}</p>
-                <p className="truncate text-[12px] text-stone-400">{user.email}</p>
+                <p className="truncate text-[13.5px] font-medium text-[#1B1712]">
+                  {user.name || "Account"}
+                </p>
+                <p className="truncate text-[12px] text-[#A69C8C]">{user.email}</p>
               </div>
             </div>
           )}
 
           {/* Delivery location, mobile */}
-          <div className="border-b border-stone-100">
+          <div className="border-b border-[#ECE7DD]">
             <button
               type="button"
               onClick={() => setMobileLocationOpen((v) => !v)}
-              className="flex w-full items-center gap-2 px-4 py-3 text-[13px] font-medium text-stone-600"
+              className="flex w-full items-center gap-2 px-4 py-3 text-[13px] font-medium text-[#6B6355]"
             >
-              <IconMapPin className="w-4 h-4 text-amber-600 shrink-0" />
+              <IconMapPin className="w-4 h-4 text-[#D98A2B] shrink-0" />
               <span className="truncate">{deliveryLocation}</span>
               <IconChevron
-                className={`ml-auto h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${
+                className={`ml-auto h-3.5 w-3.5 text-[#A69C8C] transition-transform duration-200 ${
                   mobileLocationOpen ? "rotate-180" : ""
                 }`}
               />
@@ -500,7 +535,7 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
 
             <NavLink to="/coupons" onClick={() => setMobileOpen(false)} className={mobileLinkClass}>
               <span className="flex items-center gap-1.5">
-                <IconTag className="w-3.5 h-3.5 text-amber-600" />
+                <IconTag className="w-3.5 h-3.5 text-[#D98A2B]" />
                 Offers
               </span>
             </NavLink>
@@ -509,7 +544,7 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
               <NavLink to="/cart" onClick={() => setMobileOpen(false)} className={mobileLinkClass}>
                 <span>Cart</span>
                 {itemCount > 0 && (
-                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-600 px-1.5 text-[11px] font-semibold text-white">
+                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D98A2B] px-1.5 text-[11px] font-semibold text-white">
                     {itemCount}
                   </span>
                 )}
@@ -522,12 +557,12 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
               </NavLink>
             ))}
 
-            <div className="my-1.5 border-t border-stone-100" />
+            <div className="my-1.5 border-t border-[#ECE7DD]" />
 
             {user ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-left text-[14px] font-medium text-red-600 hover:bg-red-50"
+                className="flex items-center gap-1.5 rounded-xl px-3 py-2.5 text-left text-[14px] font-medium text-red-600 hover:bg-red-50"
               >
                 <IconLogOut className="w-4 h-4" />
                 Log out
@@ -537,14 +572,14 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
                 <Link
                   to="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-[14px] font-medium text-stone-700 hover:bg-stone-50"
+                  className="rounded-xl px-3 py-2.5 text-[14px] font-medium text-[#3A322A] hover:bg-[#F7F5EF]"
                 >
                   Log in
                 </Link>
                 <Link
                   to="/signup"
                   onClick={() => setMobileOpen(false)}
-                  className="mt-1 rounded-lg bg-stone-900 px-3 py-2.5 text-center text-[14px] font-medium text-white"
+                  className="mt-1 rounded-xl bg-[#1B1712] px-3 py-2.5 text-center text-[14px] font-medium text-white transition-colors hover:bg-[#D98A2B]"
                 >
                   Sign up
                 </Link>
@@ -557,4 +592,4 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
   );
 }
 
-export default Navbar;
+export default Navbar;  
