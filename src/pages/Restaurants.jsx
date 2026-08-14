@@ -634,7 +634,7 @@ function Restaurants() {
             className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B96F1A]"
           >
             <span className="h-px w-6 bg-[#B96F1A]" />
-            Premium Food Delivery
+            Food Delivery Platform
             <span className="h-px w-6 bg-[#B96F1A]" />
           </motion.span>
 
