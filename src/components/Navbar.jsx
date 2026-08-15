@@ -136,7 +136,7 @@ const ROLE_LINKS = {
   admin: [{ to: "/admin/dashboard", label: "Admin" }],
 };
 
-const LOCATION_STORAGE_KEY = "farro:deliveryLocation";
+const LOCATION_STORAGE_KEY = "Zestora:deliveryLocation";
 
 function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) {
   const { user, logout } = useAuth();
@@ -317,7 +317,7 @@ function Navbar({ deliveryLocation: initialDeliveryLocation = "Set location" }) 
           <Logomark className="w-10 h-10 transition-transform duration-300 ease-out group-hover:-rotate-3" />
           <span className="flex-col hidden leading-none sm:flex">
             <span className="font-serif text-[20px] font-medium tracking-tight text-[#1B1712]">
-              Farro<span className="text-[#D98A2B]">.</span>
+              Zestora<span className="text-[#D98A2B]">.</span>
             </span>
             <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#A69C8C]">
               Delivered fresh
