@@ -153,7 +153,7 @@ function SplitBlurText({ text, delay = 0.04, className = "" }) {
   return (
     <span className={`inline-flex flex-wrap gap-x-[0.28em] ${className}`}>
       {words.map((word, wIdx) => (
-        <span key={wIdx} className="inline-block whitespace-nowrap overflow-hidden">
+        <span key={wIdx} className="inline-block overflow-hidden whitespace-nowrap">
           <motion.span
             initial={{ opacity: 0, filter: "blur(12px)", y: 24, rotateX: -45 }}
             animate={{ opacity: 1, filter: "blur(0px)", y: 0, rotateX: 0 }}
@@ -286,11 +286,11 @@ function InteractiveHeroShowcase({ onCategorySelect }) {
               }}
               className="absolute inset-0 cursor-pointer overflow-hidden rounded-[26px] border border-[#ECE7DD] bg-white p-3 shadow-xl hover:shadow-2xl"
             >
-              <div className="relative h-60 w-full overflow-hidden rounded-2xl bg-stone-100">
+              <div className="relative w-full overflow-hidden h-60 rounded-2xl bg-stone-100">
                 <img
                   src={card.image}
                   alt={card.title}
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1B1712]/85 via-[#1B1712]/15 to-transparent" />
 
@@ -319,7 +319,7 @@ function InteractiveHeroShowcase({ onCategorySelect }) {
         })}
       </AnimatePresence>
 
-      <div className="absolute -bottom-8 inset-x-0 flex items-center justify-center gap-2">
+      <div className="absolute inset-x-0 flex items-center justify-center gap-2 -bottom-8">
         <button
           onClick={rotateStack}
           className="rounded-full border border-[#ECE7DD] bg-white px-4 py-1.5 text-[11.5px] font-bold text-[#1B1712] shadow-sm hover:bg-[#F7F5EF] transition-colors"
@@ -389,7 +389,7 @@ function QuickViewModal({ restaurant, onClose }) {
               <img
                 src={getImageUrl(restaurant.images[0])}
                 alt={restaurant.name}
-                className="h-full w-full object-cover"
+                className="object-cover w-full h-full"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-[#C9BFA9]">
@@ -436,7 +436,7 @@ function QuickViewModal({ restaurant, onClose }) {
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-3 mt-6">
               <FavoriteButton restaurantId={restaurant._id} />
               <Link
                 to={`/restaurants/${restaurant._id}`}
@@ -498,7 +498,7 @@ function RestaurantCard({ r, index, onQuickView }) {
             Quick view
           </button>
 
-          <div className="absolute right-3 top-3 z-10">
+          <div className="absolute z-10 right-3 top-3">
             <FavoriteButton restaurantId={r._id} />
           </div>
 
@@ -627,7 +627,7 @@ function Restaurants() {
     <div className="min-h-screen bg-white text-[#1B1712]">
       {/* ---------------------------------- Hero Header ---------------------------------- */}
       <div className="relative overflow-hidden bg-white border-b border-[#ECE7DD]">
-        <div className="relative max-w-4xl px-4 pt-16 pb-20 mx-auto sm:px-6 sm:pt-20 sm:pb-20 text-center">
+        <div className="relative max-w-4xl px-4 pt-16 pb-20 mx-auto text-center sm:px-6 sm:pt-20 sm:pb-20">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -684,7 +684,7 @@ function Restaurants() {
           {/* Quick Categories Bar */}
           <div className="mt-10">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#A69C8C]">Popular Craving Categories</span>
-            <div className="mt-4 flex justify-center flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center gap-3 mt-4">
               {FOOD_CATEGORIES.map((cat, idx) => (
                 <motion.button
                   key={cat.name}
@@ -699,7 +699,7 @@ function Restaurants() {
                   }}
                   className="group flex items-center gap-2.5 rounded-xl border border-[#ECE7DD] bg-white p-2 pr-4 shadow-sm transition-all hover:border-[#D98A2B]/40 hover:shadow-md"
                 >
-                  <img src={cat.image} alt={cat.name} className="h-8 w-8 rounded-lg object-cover transition-transform group-hover:rotate-3" />
+                  <img src={cat.image} alt={cat.name} className="object-cover w-8 h-8 transition-transform rounded-lg group-hover:rotate-3" />
                   <span className="text-[13px] font-semibold text-[#1B1712] group-hover:text-[#B96F1A]">{cat.name}</span>
                 </motion.button>
               ))}
@@ -885,8 +885,8 @@ function Restaurants() {
 
       {/* ---------------------------------- Key Metrics ---------------------------------- */}
       {restaurants.length > 0 && (
-        <div className="border-t border-[#ECE7DD] bg-[#FAF8F5] py-16">
-          <div className="grid max-w-6xl grid-cols-1 gap-8 px-4 mx-auto sm:grid-cols-3 sm:px-6 text-center">
+        <div className="py-16 bg-white ">
+          <div className="grid max-w-6xl grid-cols-1 gap-8 px-4 mx-auto text-center sm:grid-cols-3 sm:px-6">
             <div>
               <p className="font-serif text-[32px] font-semibold text-[#1B1712]">
                 <AnimatedNumber value={restaurants.length} suffix="+" />
